@@ -95,6 +95,34 @@ bool BootControl::MarkBootSuccessful() {
   }
 }
 
+unsigned int BootControl::GetActiveBootSlot() {
+  AvbABData ab_data;
+
+  setenv("ANDROID_LOG_TAGS", "*:v", 1);
+  LOG(INFO) << "rk BootControl GetActiveBootSlot ";
+
+  if (avb_ab_data_read(ops->ab_ops, &ab_data) != AVB_IO_RESULT_OK) {
+    LOG(INFO) << "rk BootControl GetActiveBootSlot avb_ab_data_read failed ";
+    return false;
+  }
+  // Use the current slot by default.
+  unsigned int current_slot = GetCurrentSlot();
+  unsigned int num_slots_ = GetNumberSlots();
+  unsigned int active_boot_slot = current_slot;
+  unsigned int max_priority = ab_data.slots[current_slot].priority;
+
+  // Find the slot with the highest priority.
+  for (unsigned int i = 0; i < num_slots_; ++i) {
+    if (ab_data.slots[i].priority > max_priority) {
+      max_priority = ab_data.slots[i].priority;
+      active_boot_slot = i;
+    }
+  }
+
+  return active_boot_slot;
+}
+
+
 bool BootControl::SetActiveBootSlot(unsigned int slot) {
   LOG(INFO) << "rk BootControl SetActiveBootSlot ";
   if (slot >= GetNumberSlots()) {

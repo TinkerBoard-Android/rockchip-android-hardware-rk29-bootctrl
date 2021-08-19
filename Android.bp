@@ -102,7 +102,9 @@ cc_library {
         "libbase",
         "libcutils",
         "liblog",
+        "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
+        "android.hardware.boot@1.2",
     ],
     cflags: [
         "-DAVB_AB_I_UNDERSTAND_LIBAVB_AB_IS_DEPRECATED",
@@ -137,6 +139,7 @@ cc_defaults {
 
     shared_libs: [
         "android.hardware.boot@1.1",
+        "android.hardware.boot@1.2",
         "libbase",
         "liblog",
     ],
@@ -147,8 +150,8 @@ cc_defaults {
 }
 
 cc_library {
-    name: "android.hardware.boot@1.1-impl-rockchip",
-    stem: "android.hardware.boot@1.0-impl-1.1-rockchip",
+    name: "android.hardware.boot@1.2-impl-rockchip",
+    stem: "android.hardware.boot@1.0-impl-1.2-rockchip",
     defaults: [
         "hidl_defaults",
         "libboot_control_rockchip_defaults",
@@ -165,6 +168,7 @@ cc_library {
         "libutils",
         "android.hardware.boot@1.0",
         "android.hardware.boot@1.1",
+        "android.hardware.boot@1.2",
     ],
     static_libs: [
         "libfstab",
